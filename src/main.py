@@ -13,25 +13,50 @@ from src.recommender import load_songs, recommend_songs
 
 
 def main() -> None:
-    songs = load_songs("data/songs.csv") 
+    songs = load_songs("data/songs.csv")
 
-    # Starter example profile
-    user_prefs = {
-        "favorite_genre": "pop",
-        "favorite_mood": "happy",
-        "target_energy": 0.8,
-    }
+    profiles = [
+        (
+            "High-Energy Pop",
+            {
+                "favorite_genre": "pop",
+                "favorite_mood": "happy",
+                "target_energy": 0.85,
+            },
+        ),
+        (
+            "Chill Lofi",
+            {
+                "favorite_genre": "lofi",
+                "favorite_mood": "chill",
+                "target_energy": 0.35,
+            },
+        ),
+        (
+            "Deep Intense Rock",
+            {
+                "favorite_genre": "rock",
+                "favorite_mood": "intense",
+                "target_energy": 0.90,
+            },
+        ),
+    ]
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
+    for name, user_prefs in profiles:
+        print(f"\n{'=' * 50}")
+        print(f"Top 5 recommendations for: {name}")
+        print(f"Prefs: {user_prefs}")
+        print("=" * 50)
 
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        song = rec["song"]
-        score = rec["score"]
-        reasons = rec["reasons"]
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {', '.join(reasons)}")
-        print()
+        recommendations = recommend_songs(user_prefs, songs, k=5)
+
+        for rec in recommendations:
+            song = rec["song"]
+            score = rec["score"]
+            reasons = rec["reasons"]
+            print(f"{song['title']} - Score: {score:.2f}")
+            print(f"Because: {', '.join(reasons)}")
+            print()
 
 
 if __name__ == "__main__":
